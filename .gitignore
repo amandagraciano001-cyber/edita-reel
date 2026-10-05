@@ -1,0 +1,10 @@
+__pycache__/
+*.mov
+*.mp4
+*.MOV
+*.wav
+palavras.json
+edl.json
+legendas.json
+transcricao.txt
+.DS_Store

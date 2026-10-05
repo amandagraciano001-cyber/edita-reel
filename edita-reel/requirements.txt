@@ -1,0 +1,4 @@
+pillow>=10
+numpy>=1.24
+mlx-whisper; platform_system == "Darwin" and platform_machine == "arm64"
+faster-whisper; platform_system != "Darwin" or platform_machine != "arm64"
