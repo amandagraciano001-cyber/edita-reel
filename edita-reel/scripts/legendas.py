@@ -11,6 +11,7 @@ corrija erros de transcrição em "pt" (nomes, termos técnicos), preencha "en"
 com a tradução de cada linha se quiser legenda em inglês, e não mexa nos tempos.
 """
 import argparse
+import sys
 import json
 import os
 import re
@@ -33,8 +34,8 @@ def main():
     ap.add_argument("pasta")
     ap.add_argument("--max", type=int, default=32)
     a = ap.parse_args()
-    palavras = json.load(open(os.path.join(a.pasta, "palavras.json")))
-    edl = json.load(open(os.path.join(a.pasta, "edl.json")))
+    palavras = json.load(open(os.path.join(a.pasta, "palavras.json"), encoding="utf-8"))
+    edl = json.load(open(os.path.join(a.pasta, "edl.json"), encoding="utf-8"))
     mapa = no_tempo_novo(edl)
     ws = []
     for p in palavras:
@@ -82,11 +83,13 @@ def main():
             s["fim"] = saida[k + 1]["ini"]
         else:
             s["fim"] = round(s["fim"] + 0.2, 3)
-    json.dump(saida, open(os.path.join(a.pasta, "legendas.json"), "w"), ensure_ascii=False, indent=1)
+    json.dump(saida, open(os.path.join(a.pasta, "legendas.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"{len(saida)} linhas em {a.pasta}/legendas.json\n")
     for s in saida:
         print(f"{s['ini']:6.2f}-{s['fim']:6.2f}  {s['pt']}")
 
 
 if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     main()

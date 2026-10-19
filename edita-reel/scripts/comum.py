@@ -33,8 +33,8 @@ def eh_hdr(video):
 
 # ------------------------------------------------------------ palavras no tempo do reel já cortado
 def carregar(pasta):
-    edl = [b for b in json.load(open(os.path.join(pasta, "edl.json"))) if b.get("manter", True)]
-    pal = json.load(open(os.path.join(pasta, "palavras.json")))
+    edl = [b for b in json.load(open(os.path.join(pasta, "edl.json"), encoding="utf-8")) if b.get("manter", True)]
+    pal = json.load(open(os.path.join(pasta, "palavras.json"), encoding="utf-8"))
     return edl, pal
 
 

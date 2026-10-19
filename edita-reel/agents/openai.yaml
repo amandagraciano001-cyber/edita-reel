@@ -1,0 +1,4 @@
+interface:
+  display_name: "Edita reel"
+  short_description: "Edita reel falado: cortes, ritmo, legenda e arte"
+  default_prompt: "Use $edita-reel pra editar meu reel. O vídeo está em (caminho). Me mostra os cortes antes de aplicar."

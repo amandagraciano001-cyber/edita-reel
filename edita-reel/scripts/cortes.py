@@ -15,6 +15,7 @@ Depois de rodar: leia a lista, marque "manter": false nos blocos que são erro,
 tomada repetida ou fala que não entra, e só então monte o vídeo.
 """
 import argparse
+import sys
 import json
 import os
 
@@ -25,7 +26,7 @@ def main():
     ap.add_argument("--pausa", type=float, default=0.35)
     ap.add_argument("--folga", type=float, default=0.12)
     a = ap.parse_args()
-    palavras = json.load(open(os.path.join(a.pasta, "palavras.json")))
+    palavras = json.load(open(os.path.join(a.pasta, "palavras.json"), encoding="utf-8"))
     if not palavras:
         raise SystemExit("Nenhuma palavra na transcrição.")
     blocos, atual = [], [palavras[0]]
@@ -49,7 +50,7 @@ def main():
                     "manter": True, "texto": " ".join(x["w"] for x in b), "_ultima": b[-1]["e"]})
     for b in edl:
         b.pop("_ultima", None)
-    json.dump(edl, open(os.path.join(a.pasta, "edl.json"), "w"), ensure_ascii=False, indent=1)
+    json.dump(edl, open(os.path.join(a.pasta, "edl.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     total = sum(b["fim"] - b["ini"] for b in edl)
     print(f"{len(edl)} blocos, {total:.1f}s de fala (pausas removidas)\n")
     for b in edl:
@@ -57,4 +58,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     main()

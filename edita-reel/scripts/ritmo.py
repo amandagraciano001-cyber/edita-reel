@@ -15,6 +15,7 @@ O que ele faz, do jeito que os reels falados que prendem fazem:
 Vídeo HDR do iPhone continua HDR. Grava PASTA/reel-ritmo.mp4 (ou --saida).
 """
 import argparse
+import sys
 import os
 import subprocess
 
@@ -86,4 +87,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     main()

@@ -1,8 +1,8 @@
 # Edita reel
 
-Uma skill gratuita pro Claude Code que edita o seu reel falado sem você abrir nenhum editor.
+Uma skill gratuita pro Claude Code e pro Codex que edita o seu reel falado sem você abrir nenhum editor.
 
-Você grava falando pra câmera, chama `/edita-reel` e o Claude:
+Você grava falando pra câmera, chama `/edita-reel` (ou `$edita-reel` no Codex) e o agente:
 
 1. **Transcreve no seu computador**, sem mandar nada pra internet e sem custo.
 2. **Propõe os cortes**: pausas, tomadas repetidas, frase que começou errado. Você aprova antes.
@@ -14,16 +14,37 @@ Depois é só dar recado, como pra uma editora: "corta a frase do meio", "abre p
 
 Feita por [Amanda Graciano](https://amandagraciano.com), a partir do processo que ela usa pra editar os próprios reels.
 
+## Funciona em
+
+Claude Code e Codex, no Mac, no Windows e no Linux. O instalador acha sozinho qual agente você tem e coloca a skill no lugar certo de cada um.
+
+| Agente | Onde a skill fica | Como chamar |
+|---|---|---|
+| Claude Code | `~/.claude/skills/edita-reel` | `/edita-reel` |
+| Codex | `~/.agents/skills/edita-reel` | `$edita-reel` |
+
 ## O que você precisa
 
-- [Claude Code](https://claude.com/claude-code)
-- Mac (de preferência com chip Apple) ou Linux
-- [ffmpeg](https://ffmpeg.org): no Mac, `brew install ffmpeg`
-- Python 3.10 ou mais novo
+- [Claude Code](https://claude.com/claude-code) ou [Codex](https://developers.openai.com/codex)
+
+| | Mac | Windows | Linux |
+|---|---|---|---|
+| Python 3.9 ou mais novo | já vem no Mac (ou `brew install python`) | `winget install Python.Python.3.12` | `sudo apt install python3 python3-venv` |
+| ffmpeg | `brew install ffmpeg` | `winget install Gyan.FFmpeg` | `sudo apt install ffmpeg` |
+
+O instalador cria uma pasta `.venv` dentro da skill com as bibliotecas (Pillow, numpy e a transcrição certa pro seu computador). A transcrição se ajusta sozinha:
+
+| Computador | Como transcreve |
+|---|---|
+| Mac com chip Apple | mlx-whisper, no próprio chip. Rápido. |
+| Windows ou Linux com placa NVIDIA | faster-whisper na placa, se as bibliotecas CUDA 12 estiverem instaladas; sem elas, cai sozinho pro processador. |
+| Sem placa de vídeo (e Mac Intel) | faster-whisper no processador. Mais lento: um reel de 1 minuto pode levar alguns minutos. Se ficar lento demais, use o modelo menor com a variável `EDITA_REEL_MODELO=small`. |
+
+Vídeo HDR do iPhone continua HDR. Vídeo HDR10 (o de alguns Android) sai em cor normal, com aviso.
 
 ## Como instalar
 
-**Jeito mais fácil:** abra o Claude Code e cole:
+**Jeito mais fácil:** abra o Claude Code ou o Codex e cole:
 
 ```
 https://github.com/amandagraciano001-cyber/edita-reel
@@ -31,17 +52,29 @@ https://github.com/amandagraciano001-cyber/edita-reel
 Instala essa skill pra mim e confere se as dependências estão instaladas.
 ```
 
-**Ou você mesma:**
+**Pelo instalador.** Baixe o repositório (com o `git clone` abaixo, ou pelo botão Code > Download ZIP aqui no GitHub) e rode o instalador dentro da pasta.
+
+Mac ou Linux, no Terminal:
 
 ```bash
-git clone https://github.com/amandagraciano001-cyber/edita-reel.git edita-reel
-cp -r edita-reel/edita-reel ~/.claude/skills/
-pip install -r ~/.claude/skills/edita-reel/requirements.txt
+git clone https://github.com/amandagraciano001-cyber/edita-reel.git
+cd edita-reel
+bash instalar.sh
 ```
 
-Já tinha a versão anterior? Repita o `cp -r` por cima: os arquivos novos entram e os antigos continuam funcionando do mesmo jeito.
+Windows, no PowerShell:
+
+```powershell
+git clone https://github.com/amandagraciano001-cyber/edita-reel.git
+cd edita-reel
+powershell -ExecutionPolicy Bypass -File instalar.ps1
+```
+
+Pra instalar só num agente: `--claude` ou `--codex` no Mac e no Linux, `-Claude` ou `-Codex` no Windows. Já tinha instalado? Rode o instalador de novo: ele troca os arquivos e mantém o que já foi baixado.
 
 ## Como usar
+
+No Claude Code a skill é chamada com `/edita-reel`; no Codex, com `$edita-reel`. O resto do pedido é igual.
 
 Abra o Claude Code e peça:
 
@@ -64,7 +97,9 @@ Na primeira vez, ele baixa o modelo de transcrição (alguns minutos, uma vez s�
 
 | Arquivo | O que faz |
 |---|---|
-| `edita-reel/SKILL.md` | O passo a passo que o Claude segue |
+| `instalar.sh` e `instalar.ps1` | Os instaladores do Mac e Linux e do Windows |
+| `edita-reel/agents/openai.yaml` | O nome e a descrição que o Codex mostra |
+| `edita-reel/SKILL.md` | O passo a passo que o agente segue |
 | `scripts/transcrever.py` | Transcrição local com o tempo de cada palavra |
 | `scripts/cortes.py` | Separa a fala em frases e tira as pausas |
 | `scripts/legendas.py` | Legenda em duas linhas (português e inglês) no tempo do vídeo cortado, pra versão básica |

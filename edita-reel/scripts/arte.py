@@ -22,6 +22,7 @@ ARTE.json (tudo opcional; um tempo é número em segundos ou {"palavra": "x", "n
 }
 """
 import argparse
+import sys
 import json
 import os
 import shutil
@@ -159,7 +160,7 @@ def compor(video, eventos, saida, hdr):
                 seq.append((quadros[chave], t))
                 chave_ant = chave
         lista = os.path.join(tmp, "lista.txt")
-        with open(lista, "w") as f:
+        with open(lista, "w", encoding="utf-8") as f:
             for i, (p, t) in enumerate(seq):
                 fim = seq[i + 1][1] if i + 1 < len(seq) else total
                 f.write(f"file '{p}'\nduration {max(fim - t, 1 / FPS):.5f}\n")
@@ -187,7 +188,7 @@ def main():
     ap.add_argument("--velocidade", type=float, default=1.0)
     ap.add_argument("--saida")
     a = ap.parse_args()
-    arte = json.load(open(a.arte))
+    arte = json.load(open(a.arte, encoding="utf-8"))
     palavras = palavras_no_reel(a.pasta, a.velocidade)
     total = duracao(a.video)
     hdr = eh_hdr(a.video)
@@ -198,4 +199,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     main()

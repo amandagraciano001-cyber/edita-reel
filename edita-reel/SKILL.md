@@ -1,19 +1,30 @@
 ---
 name: edita-reel
-description: Edita vídeo de reel falado (Instagram, TikTok, Shorts) sem abrir editor. Transcreve no computador, propõe os cortes de pausas e erros pra aprovação, dá ritmo (zoom de abertura e cortes a cada frase), coloca a legenda com a palavra ativa, a capa, o título, prints flutuando e o fecho e exporta em 9:16. Use quando a pessoa pedir "edita esse vídeo", "faz o reel", "corta as pausas", "coloca legenda", "põe o print na tela" ou chamar /edita-reel.
+description: Edita vídeo de reel falado (Instagram, TikTok, Shorts) sem abrir editor. Transcreve no computador, propõe os cortes de pausas e erros pra aprovação, dá ritmo (zoom de abertura e cortes a cada frase), coloca a legenda com a palavra ativa, a capa, o título, prints flutuando e o fecho e exporta em 9:16. Use quando a pessoa pedir "edita esse vídeo", "faz o reel", "corta as pausas", "coloca legenda", "põe o print na tela" ou chamar /edita-reel (Claude Code) ou $edita-reel (Codex).
 ---
 
 # Edita reel
 
 Você é a editora de reels da pessoa. Ela grava falando pra câmera; você entrega o reel cortado, com ritmo, legendado, com a arte em cima e pronto pra postar. Nada sai do computador dela: a transcrição roda localmente.
 
-Os scripts ficam em `scripts/` dentro desta pasta da skill. Rode sempre com o Python onde as dependências estão instaladas (veja "Primeira vez"). Todo comando recebe o caminho absoluto do vídeo e da pasta.
+Os scripts ficam em `scripts/` dentro desta pasta da skill. Rode sempre com o Python da `.venv` da skill (veja "Primeira vez"). Todo comando recebe o caminho absoluto do vídeo e da pasta.
 
 ## Primeira vez (confira antes de começar)
 
-1. `ffmpeg -version` responde? Se não: `brew install ffmpeg` (Mac).
-2. As bibliotecas estão instaladas? `python3 -c "import PIL, numpy"`. Se não: `pip install -r requirements.txt` (na pasta da skill). Em Mac com chip Apple, a transcrição usa `mlx-whisper`; em outros computadores, `faster-whisper`.
-3. A primeira transcrição baixa o modelo do Whisper (uma vez só, alguns minutos). Avise a pessoa.
+Funciona igual no Claude Code e no Codex, no Mac, no Windows e no Linux. Os scripts rodam com o Python da pasta `.venv` que o instalador cria dentro da skill:
+- Mac e Linux: `<pasta da skill>/.venv/bin/python`
+- Windows: `<pasta da skill>\.venv\Scripts\python.exe`
+
+Os exemplos abaixo escrevem `python` no lugar dele. Caminho com espaço vai entre aspas.
+
+1. `ffmpeg -version` responde? Se não: `brew install ffmpeg` no Mac, `winget install Gyan.FFmpeg` no Windows (feche e abra o terminal depois), `sudo apt install ffmpeg` no Linux.
+2. A pasta `.venv` existe dentro da skill? Se não, rode o instalador do repositório (`bash instalar.sh` no Mac e no Linux, `instalar.ps1` no Windows) ou crie à mão: `python3 -m venv .venv` e depois `pip install -r requirements.txt` com o Python dela.
+3. A transcrição se ajusta ao computador, sem configurar nada:
+   - Mac com chip Apple: mlx-whisper, no chip. Rápido.
+   - Windows ou Linux com placa NVIDIA: faster-whisper na placa, se as bibliotecas CUDA 12 estiverem instaladas; sem elas, cai sozinho pro processador.
+   - Sem placa de vídeo (e Mac Intel): faster-whisper no processador, mais lento. Se um reel de 1 minuto passar de uns 5 minutos, use o modelo menor: `EDITA_REEL_MODELO=small` antes do comando no Mac e no Linux, ou `$env:EDITA_REEL_MODELO="small"` no PowerShell.
+4. A primeira transcrição baixa o modelo (uma vez só, alguns minutos). Avise a pessoa.
+5. Cor: vídeo HDR do iPhone continua HDR. Vídeo HDR10 (o de alguns Android) sai em cor normal, com aviso.
 
 ## O visual que a skill produz
 

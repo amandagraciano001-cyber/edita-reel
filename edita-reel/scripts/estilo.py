@@ -5,8 +5,8 @@ O visual segue o que funciona nos reels falados que vendem: o rosto fica na tela
 curta e branca com a palavra falada em itálico, o título é pequeno e espaçado no alto, e os prints flutuam
 sobre o vídeo com sombra, sem cartão opaco e sem tela dividida. Só a capa dos primeiros segundos é grande.
 
-Fontes: usa as que encontrar no computador (Helvetica Neue condensada no Mac, Montserrat e Fraunces se
-estiverem instaladas) e cai para Arial ou DejaVu quando não achar. Troque os caminhos em FONTES se quiser.
+Fontes: usa as que encontrar no computador. Mac: Helvetica Neue condensada (e Montserrat e Fraunces, se
+estiverem instaladas). Windows: Bahnschrift, Segoe UI e Georgia. Linux: Liberation e DejaVu. Troque os caminhos em FONTES se quiser.
 """
 import os
 
@@ -15,22 +15,37 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 W, H = 1080, 1920
 BRANCO = (255, 255, 255)
 
+def _win(nome):
+    return os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts", nome)
+
+
 FONTES = {
     # (caminho, índice dentro do .ttc, nome da variação)  -- o primeiro que existir vence
     "condensada": [("/System/Library/Fonts/HelveticaNeue.ttc", 9, None),
                    ("/Library/Fonts/Arial Bold.ttf", 0, None),
                    ("/System/Library/Fonts/Supplemental/Arial Bold.ttf", 0, None),
+                   (_win("bahnschrift.ttf"), 0, "Bold Condensed"),
+                   (_win("arialbd.ttf"), 0, None),
+                   ("/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Bold.ttf", 0, None),
                    ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 0, None)],
     "normal": [("/System/Library/Fonts/HelveticaNeue.ttc", 0, None),
                ("/System/Library/Fonts/Supplemental/Arial.ttf", 0, None),
+               (_win("segoeui.ttf"), 0, None),
+               (_win("arial.ttf"), 0, None),
+               ("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf", 0, None),
                ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 0, None)],
     "rotulo": [(os.path.expanduser("~/Library/Fonts/Montserrat.ttf"), 0, "SemiBold"),
                ("/System/Library/Fonts/HelveticaNeue.ttc", 1, None),
                ("/System/Library/Fonts/Supplemental/Arial Bold.ttf", 0, None),
+               (_win("seguisb.ttf"), 0, None),
+               (_win("arialbd.ttf"), 0, None),
                ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 0, None)],
     "italico": [(os.path.expanduser("~/Library/Fonts/Fraunces-Italic-VariableFont_SOFT,WONK,opsz,wght.ttf"), 0, "axes"),
                 ("/System/Library/Fonts/Supplemental/Georgia Italic.ttf", 0, None),
                 ("/System/Library/Fonts/Supplemental/Arial Italic.ttf", 0, None),
+                (_win("georgiai.ttf"), 0, None),
+                (_win("ariali.ttf"), 0, None),
+                ("/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf", 0, None),
                 ("/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf", 0, None)],
 }
 

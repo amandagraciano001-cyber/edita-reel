@@ -15,6 +15,7 @@ Imagem e som são gerados em etapas separadas: juntos no mesmo filtro, o ffmpeg
 pode congelar quadros.
 """
 import argparse
+import sys
 import json
 import os
 import shutil
@@ -32,6 +33,8 @@ LUZ = {"suave": "eq=brightness=0.06:contrast=1.08:saturation=1.05,curves=master=
        "forte": "eq=brightness=0.10:contrast=1.08:saturation=1.05,curves=master='0/0 0.25/0.34 0.6/0.72 1/1',colortemperature=temperature=5600"}
 FONTES_ITALICO = ["/System/Library/Fonts/Supplemental/Arial Italic.ttf",
                   "/Library/Fonts/Arial Italic.ttf",
+                  os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts", "ariali.ttf"),
+                  "/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf",
                   "/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf"]
 
 
@@ -144,7 +147,7 @@ def trilha_legenda(W, H, legendas, total, hdr, ingles, pasta):
     if total > t:
         seq.append((img("", ""), total - t))
     lista = os.path.join(pasta, "lista.txt")
-    with open(lista, "w") as f:
+    with open(lista, "w", encoding="utf-8") as f:
         for p, d in seq:
             f.write(f"file '{p}'\nduration {d:.4f}\n")
         f.write(f"file '{seq[-1][0]}'\n")
@@ -174,7 +177,7 @@ def main():
         print("Aviso: vídeo em HDR PQ (não HLG). Vai sair em SDR e a cor pode mudar.")
     hdr = info["hdr"]
     W, H = (1080, 1920) if a.formato == "9:16" else (info["w"] // 2 * 2, info["h"] // 2 * 2)
-    edl = [b for b in json.load(open(os.path.join(a.pasta, "edl.json"))) if b.get("manter", True)]
+    edl = [b for b in json.load(open(os.path.join(a.pasta, "edl.json"), encoding="utf-8")) if b.get("manter", True)]
     if not edl:
         raise SystemExit("Nenhum bloco marcado pra manter no edl.json.")
     total = sum(b["fim"] - b["ini"] for b in edl)
@@ -219,7 +222,7 @@ def main():
         video_final = corte_v
         leg_json = os.path.join(a.pasta, "legendas.json")
         if not a.sem_legenda and os.path.exists(leg_json):
-            legendas = json.load(open(leg_json))
+            legendas = json.load(open(leg_json, encoding="utf-8"))
             trilha = trilha_legenda(W, H, legendas, total, hdr, not a.sem_ingles, os.path.join(tmp, "leg"))
             fmt = "yuv444p10" if hdr else "yuv420"
             saida_fmt = "yuv420p10le" if hdr else "yuv420p"
@@ -251,4 +254,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     main()
