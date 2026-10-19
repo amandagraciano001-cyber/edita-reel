@@ -9,7 +9,7 @@ Você grava falando pra câmera, chama `/edita-reel` e o Claude:
 3. **Dá ritmo**: a câmera aproxima devagar na primeira frase e depois alterna plano aberto e fechado a cada frase, como se houvesse cortes.
 4. **Coloca a arte**: capa grande com a frase mais forte, título pequeno no alto, legenda com a palavra que está sendo dita em destaque, print flutuando quando você cita um site ou produto, número grande, lista acendendo, e o fecho ("Comenta PALAVRA" ou o seu link).
 5. **Exporta em 9:16**, pronto pra Instagram, TikTok e Shorts. Vídeo do iPhone em HDR continua HDR.
-6. **Guarda no Estúdio**: uma página local com todos os vídeos prontos, a legenda de cada um pra copiar, a palavra-chave e o estado (pronto, programado, postado).
+6. **Guarda no Estúdio**: uma página local com todos os vídeos prontos, a legenda de cada um pra copiar, a palavra-chave e o estado (pronto, programado, postado). Tem a fila "Pra postar" por data, o histórico "Postados" e um calendário mês a mês; a data e o estado dá pra marcar na própria página.
 
 Depois é só dar recado, como pra uma editora: "corta a frase do meio", "abre pela frase mais forte", "troca a capa", "tira o print", "acelera 1.1".
 
@@ -73,7 +73,7 @@ Na primeira vez, ele baixa o modelo de transcrição (alguns minutos, uma vez s�
 | `scripts/ritmo.py` | Zoom de abertura e alternância de plano a cada frase |
 | `scripts/estilo.py` | As peças visuais: capa, título, legenda ativa, print flutuando, número, lista, fecho |
 | `scripts/arte.py` | Lê um `arte.json` e põe tudo isso por cima do vídeo, numa camada só |
-| `scripts/estudio.py` | A página local com os vídeos prontos, legendas e estado |
+| `scripts/estudio.py` | A página local com os vídeos prontos, legendas, estado, fila por data e calendário |
 | `scripts/comum.py` | Tempo das palavras no vídeo cortado e o codificador certo (HDR ou SDR) |
 
 ## Novidades

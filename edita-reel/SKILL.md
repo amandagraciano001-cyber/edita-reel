@@ -93,9 +93,9 @@ Gera `reel-final.mp4`. A arte é desenhada numa camada só, quadro a quadro, e s
 
 ### 8. Guardar no Estúdio
 ```
-python scripts/estudio.py PASTA_DOS_PRONTOS --video reel-final.mp4 --titulo "..." --palavra PALAVRA --legenda-instagram "..." --legenda-tiktok "..."
+python scripts/estudio.py PASTA_DOS_PRONTOS --video reel-final.mp4 --titulo "..." --palavra PALAVRA --legenda-instagram "..." --legenda-tiktok "..." --data 2026-10-25
 ```
-O Estúdio é uma página local (`estudio.html`) com um cartão por vídeo pronto: o vídeo, a capa, a legenda com botão de copiar, a palavra-chave e o estado (pronto, programado, postado). Os dados ficam em `estudio.json`, que a pessoa pode editar na mão. Entregue o caminho da página junto com o vídeo. Escreva a legenda do post com a mesma ideia da capa e termine com a chamada da palavra-chave.
+O Estúdio é uma página local (`estudio.html`) com um cartão por vídeo pronto: o vídeo, a capa, a legenda com botão de copiar, a palavra-chave, o estado (pronto, programado, postado) e a data de postar. A página tem três abas: "Pra postar" (a fila, programados por data e depois os prontos sem data), "Postados" e "Calendário" (mês a mês). A pessoa pode marcar data e estado na própria página; o botão "Baixar estudio.json" devolve o arquivo com as mudanças pra ela trocar na pasta. Os dados ficam em `estudio.json`, que também pode ser editado na mão. Quando a pessoa pedir "monta o Estúdio", "cria um estúdio" ou "quero ver meus vídeos prontos", rode o script na pasta dos vídeos e abra o `estudio.html`. Entregue o caminho da página junto com o vídeo. Escreva a legenda do post com a mesma ideia da capa e termine com a chamada da palavra-chave.
 
 ### 9. Recados
 A pessoa vai pedir ajustes em texto, como faria com uma editora. O que fazer:
