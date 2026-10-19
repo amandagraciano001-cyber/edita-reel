@@ -9,7 +9,6 @@ Você grava falando pra câmera, chama `/edita-reel` e o Claude:
 3. **Dá ritmo**: a câmera aproxima devagar na primeira frase e depois alterna plano aberto e fechado a cada frase, como se houvesse cortes.
 4. **Coloca a arte**: capa grande com a frase mais forte, título pequeno no alto, legenda com a palavra que está sendo dita em destaque, print flutuando quando você cita um site ou produto, número grande, lista acendendo, e o fecho ("Comenta PALAVRA" ou o seu link).
 5. **Exporta em 9:16**, pronto pra Instagram, TikTok e Shorts. Vídeo do iPhone em HDR continua HDR.
-6. **Guarda no Estúdio**: uma página local com todos os vídeos prontos, a legenda de cada um pra copiar, a palavra-chave e o estado (pronto, programado, postado). Tem a fila "Pra postar" por data, o histórico "Postados" e um calendário mês a mês; a data e o estado dá pra marcar na própria página.
 
 Depois é só dar recado, como pra uma editora: "corta a frase do meio", "abre pela frase mais forte", "troca a capa", "tira o print", "acelera 1.1".
 
@@ -73,12 +72,19 @@ Na primeira vez, ele baixa o modelo de transcrição (alguns minutos, uma vez s�
 | `scripts/ritmo.py` | Zoom de abertura e alternância de plano a cada frase |
 | `scripts/estilo.py` | As peças visuais: capa, título, legenda ativa, print flutuando, número, lista, fecho |
 | `scripts/arte.py` | Lê um `arte.json` e põe tudo isso por cima do vídeo, numa camada só |
-| `scripts/estudio.py` | A página local com os vídeos prontos, legendas, estado, fila por data e calendário |
 | `scripts/comum.py` | Tempo das palavras no vídeo cortado e o codificador certo (HDR ou SDR) |
+
+## A família
+
+Edita reel é a do meio de três skills que funcionam juntas, cada uma sozinha também:
+
+1. **[Roteiro reel](https://github.com/amandagraciano001-cyber/roteiro-reel)**: antes de gravar. Ideia entra, roteiro sai, com capa, legendas e palavra-chave. O roteiro vira o `arte.json` desta skill com um comando.
+2. **Edita reel** (esta): depois de gravar. Vídeo bruto entra, reel editado sai.
+3. **[Estúdio reel](https://github.com/amandagraciano001-cyber/estudio-reel)**: depois de editar. Os vídeos prontos viram fila, calendário e histórico.
 
 ## Novidades
 
-**Outubro de 2026.** Ritmo (zoom de abertura e cortes de plano por frase), arte por cima do vídeo a partir de um JSON (capa, título, legenda com palavra ativa, prints com crédito, listas, números, fecho), opção de luz pra vídeo SDR escuro, abertura fria reordenando os blocos, e o Estúdio. A versão básica (corte + legenda em duas linhas) continua igual.
+**Outubro de 2026.** Ritmo (zoom de abertura e cortes de plano por frase), arte por cima do vídeo a partir de um JSON (capa, título, legenda com palavra ativa, prints com crédito, listas, números, fecho), opção de luz pra vídeo SDR escuro, abertura fria reordenando os blocos. O Estúdio, que nasceu aqui, virou a skill própria Estúdio reel. A versão básica (corte + legenda em duas linhas) continua igual.
 
 ## Licença
 

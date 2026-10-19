@@ -1,6 +1,6 @@
 ---
 name: edita-reel
-description: Edita vídeo de reel falado (Instagram, TikTok, Shorts) sem abrir editor. Transcreve no computador, propõe os cortes de pausas e erros pra aprovação, dá ritmo (zoom de abertura e cortes a cada frase), coloca a legenda com a palavra ativa, a capa, o título, prints flutuando e o fecho, exporta em 9:16 e organiza os prontos no Estúdio. Use quando a pessoa pedir "edita esse vídeo", "faz o reel", "corta as pausas", "coloca legenda", "põe o print na tela" ou chamar /edita-reel.
+description: Edita vídeo de reel falado (Instagram, TikTok, Shorts) sem abrir editor. Transcreve no computador, propõe os cortes de pausas e erros pra aprovação, dá ritmo (zoom de abertura e cortes a cada frase), coloca a legenda com a palavra ativa, a capa, o título, prints flutuando e o fecho e exporta em 9:16. Use quando a pessoa pedir "edita esse vídeo", "faz o reel", "corta as pausas", "coloca legenda", "põe o print na tela" ou chamar /edita-reel.
 ---
 
 # Edita reel
@@ -91,11 +91,10 @@ Gera `reel-final.mp4`. A arte é desenhada numa camada só, quadro a quadro, e s
 - Confira que não há quadro congelado: `ffmpeg -i reel-final.mp4 -vf freezedetect=n=0.001:d=0.6 -f null -` não deve listar nada.
 - Diga a duração final e onde está o arquivo.
 
-### 8. Guardar no Estúdio
-```
-python scripts/estudio.py PASTA_DOS_PRONTOS --video reel-final.mp4 --titulo "..." --palavra PALAVRA --legenda-instagram "..." --legenda-tiktok "..." --data 2026-10-25
-```
-O Estúdio é uma página local (`estudio.html`) com um cartão por vídeo pronto: o vídeo, a capa, a legenda com botão de copiar, a palavra-chave, o estado (pronto, programado, postado) e a data de postar. A página tem três abas: "Pra postar" (a fila, programados por data e depois os prontos sem data), "Postados" e "Calendário" (mês a mês). A pessoa pode marcar data e estado na própria página; o botão "Baixar estudio.json" devolve o arquivo com as mudanças pra ela trocar na pasta. Os dados ficam em `estudio.json`, que também pode ser editado na mão. Quando a pessoa pedir "monta o Estúdio", "cria um estúdio" ou "quero ver meus vídeos prontos", rode o script na pasta dos vídeos e abra o `estudio.html`. Entregue o caminho da página junto com o vídeo. Escreva a legenda do post com a mesma ideia da capa e termine com a chamada da palavra-chave.
+### 8. Entregar
+Entregue o caminho do `reel-final.mp4` (e da versão do TikTok, se houver), a duração e a legenda do post: primeira linha com a mesma ideia da capa, corpo curto e a chamada da palavra-chave.
+
+Se a pessoa usa a skill **Estúdio reel**, ofereça guardar o vídeo lá (a fila do que postar, o calendário e o histórico). Se o vídeo nasceu de um roteiro da skill **Roteiro reel**, o `arte.json` do passo 6 pode sair direto dele com `roteiros.py arte`, e o Estúdio lê título, legendas e palavra-chave do mesmo arquivo.
 
 ### 9. Recados
 A pessoa vai pedir ajustes em texto, como faria com uma editora. O que fazer:
