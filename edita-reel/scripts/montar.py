@@ -9,6 +9,8 @@ Grava PASTA/reel.mp4 (ou --saida).
 
 Vídeo de iPhone em HDR (HLG) continua HDR: a legenda é convertida pro mesmo
 espaço de cor, pra não sair lavada nem com o amarelo virando laranja.
+--luz suave|forte clareia o rosto em vídeo SDR gravado com pouca luz (em HDR é ignorado,
+pra não lavar a cor). --sem-legenda deixa o reel limpo pra arte.py colocar a legenda ativa.
 Imagem e som são gerados em etapas separadas: juntos no mesmo filtro, o ffmpeg
 pode congelar quadros.
 """
@@ -24,8 +26,10 @@ import zlib
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 FPS = 30
-AMARELO = (234, 219, 143, 255)   # legenda em português, estilo Amanda Roucha
+AMARELO = (234, 219, 143, 255)   # legenda em português: amarelo claro em itálico
 BRANCO = (255, 255, 255, 255)    # legenda em inglês
+LUZ = {"suave": "eq=brightness=0.06:contrast=1.08:saturation=1.05,curves=master='0/0 0.25/0.32 0.6/0.7 1/1'",
+       "forte": "eq=brightness=0.10:contrast=1.08:saturation=1.05,curves=master='0/0 0.25/0.34 0.6/0.72 1/1',colortemperature=temperature=5600"}
 FONTES_ITALICO = ["/System/Library/Fonts/Supplemental/Arial Italic.ttf",
                   "/Library/Fonts/Arial Italic.ttf",
                   "/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf"]
@@ -161,6 +165,7 @@ def main():
     ap.add_argument("--sem-ingles", action="store_true")
     ap.add_argument("--sem-audio", action="store_true")
     ap.add_argument("--formato", default="9:16", choices=["9:16", "original"])
+    ap.add_argument("--luz", choices=["suave", "forte"], help="clareia o rosto (só SDR)")
     ap.add_argument("--saida")
     a = ap.parse_args()
 
@@ -179,6 +184,10 @@ def main():
         # 1. corte + enquadramento (imagem)
         enq = (f"scale={W}:{H}:force_original_aspect_ratio=increase:flags=lanczos,crop={W}:{H}"
                if a.formato == "9:16" else f"scale={W}:{H}")
+        if a.luz and not hdr:
+            enq += "," + LUZ[a.luz]
+        elif a.luz:
+            print("Aviso: --luz é ignorado em vídeo HDR (a cor lavaria). Grave com mais luz ou use o SDR.")
         partes, rotulos = [], []
         for i, b in enumerate(edl):
             partes.append(f"[0:v]trim=start={b['ini']}:end={b['fim']},setpts=PTS-STARTPTS,{enq},fps={FPS},setsar=1[v{i}]")
